@@ -1,0 +1,14 @@
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.exe
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.deps.json
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.runtimeconfig.json
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.runtimeconfig.dev.json
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.dll
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\bin\Debug\netcoreapp3.1\TPF_dns.pdb
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.csproj.AssemblyReference.cache
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.GeneratedMSBuildEditorConfig.editorconfig
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.AssemblyInfoInputs.cache
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.AssemblyInfo.cs
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.csproj.CoreCompileInputs.cache
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.dll
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.pdb
+B:\1 cuatrimestre 2022\CTEDyA\TPF_dns\obj\Debug\netcoreapp3.1\TPF_dns.genruntimeconfig.cache
