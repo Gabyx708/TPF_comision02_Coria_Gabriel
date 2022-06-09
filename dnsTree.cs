@@ -8,60 +8,76 @@ namespace TPF_dns
     class dnsTree
     {
         /*creacion del arbol DNS*/
-        private registroDNS r,c,n,o;
+        private static dnsTree dnsSys = null;
+        private registroDNS r,c,n,o,g;
         private ArbolGeneral<registroDNS> root;
- 
+        
+        public static dnsTree getInstance()
+        {
+            if (dnsSys == null)
+                dnsSys = new dnsTree();
+            return dnsSys;
+        }
 
-        public dnsTree() /*al instanciar el objeto se creara un sistema DNS "predefinido"*/
+        private dnsTree() /*al instanciar el objeto se creara un sistema DNS "predefinido"*/
         {   
             /*se crean los primeros registros*/
             r = new registroDNS("ROOT", "0.0.0.0", "dns");
-            c = new registroDNS("com", "170.0.0.0", "dns");
-            n = new registroDNS("net", "180.0.0.0", "dns");
-            o = new registroDNS("org", "190.0.0.0", "dns");
-
+            c = new registroDNS("com", "120.0.0.0", "dns");
+            n = new registroDNS("net", "130.0.0.0", "dns");
+            o = new registroDNS("org", "140.0.0.0", "dns");
+            g = new registroDNS("google","8.8.8.8","dns");
             /*se crean los arboles hijos de la raiz*/
             root = new ArbolGeneral<registroDNS>(r);
             root.agregarHijo(new ArbolGeneral<registroDNS>(c));
             root.agregarHijo(new ArbolGeneral<registroDNS>(n));
             root.agregarHijo(new ArbolGeneral<registroDNS>(o));
+            root.agregarHijo(new ArbolGeneral<registroDNS>(g));
 
         }
         
         public ArbolGeneral<registroDNS> dnsSistema()
         {
-            return root;
+            return root; /*contiene todo el sistema dns*/
         }
         public void addRegister(registroDNS dns)
         {
            string[] dominios = dns.getTag().Split('.');
-           string nomDomi = dominios[0];
-           string subdominio = dominios[1];
-           string superior = dominios[2];
 
             /*nuevo hijo para agregar al arbol*/
             ArbolGeneral<registroDNS> newReg = new ArbolGeneral<registroDNS>(dns);
-            add(newReg,root);
+            _add(newReg,root,dominios);
 
-             void add(ArbolGeneral<registroDNS> n,ArbolGeneral<registroDNS> r)
+                
+        }
+
+        private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
+        {
+            foreach (var hijos in r.getHijos())
             {
-                foreach (var x in r .getHijos())
+                if(hijos.getDatoRaiz().getTag() == tag[2])
                 {
-                    if (x.getDatoRaiz().getTag() == superior)
-                    {
-                        x.agregarHijo(newReg);                  
-                    }
-                    else
-                    {
-                        add(n,x);
-                    }
+                    Console.WriteLine("por su tag 2 agregue a: "+n.getDatoRaiz());
+                    hijos.agregarHijo(n);
+                    break;
+                }else if (hijos.getDatoRaiz().getTag() == tag[1])
+                {
+                    Console.WriteLine("por su tag 1 agregue a: " + n.getDatoRaiz());
+                    hijos.agregarHijo(n);
+                    break;
+                }else if (hijos.getDatoRaiz().getTag() == tag[1] && tag[0] != hijos.getDatoRaiz().getTag())
+                {
+                    Console.WriteLine("por su nose agregue a: " + n.getDatoRaiz());
+                    hijos.agregarHijo(n);
+                    break;
+                }
+                else
+                {
+                    _add(n,hijos,tag);
                 }
             }
 
-          
-           
         }
-
         ///
     }
   

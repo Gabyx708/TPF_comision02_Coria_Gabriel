@@ -34,14 +34,15 @@ namespace TPF_dns
 
         public override string ToString()
         {
-            return "\nEtiqueta: " + tag + "|| IP: " + IP + "|| servicio: " + service+"||\n";
+            /*return "\n(Etiqueta: " + tag + "|| IP: " + IP + "|| servicio: " + service+"||)\n";*/
+            return "("+tag+")";
         }
 
         public string getServi()
         {
             return service;
         }
-
+        
         public string getIP()
         {
             return IP;
