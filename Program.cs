@@ -11,6 +11,7 @@ namespace TPF_dns
             registroDNS test3 = new registroDNS("es.google.com", "8.8.8.8", "WWW");
             registroDNS test4 = new registroDNS("es.campus.net", "10.50.50.8", "WWW");
             registroDNS test5 = new registroDNS("en.google.com", "10.50.50.8", "WWW");
+            registroDNS test6 = new registroDNS("es.argentina.org", "10.50.50.8", "WWW");
 
             dnsTree x = dnsTree.getInstance();
 
@@ -19,9 +20,9 @@ namespace TPF_dns
 
             x.addRegister(test);
             x.addRegister(test2);
-            x.addRegister(test3);
+            x.addRegister(test6);
             x.addRegister(test4);
-            x.addRegister(test5);
+          
 
             x.dnsSistema().porNiveles();
         }

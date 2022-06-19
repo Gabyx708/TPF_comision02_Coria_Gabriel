@@ -40,45 +40,65 @@ namespace TPF_dns
         {
             return root; /*contiene todo el sistema dns*/
         }
+
         public void addRegister(registroDNS dns)
         {
            string[] dominios = dns.getTag().Split('.');
 
             /*nuevo hijo para agregar al arbol*/
             ArbolGeneral<registroDNS> newReg = new ArbolGeneral<registroDNS>(dns);
-            _add(newReg,root,dominios);
-
-                
+            _add(newReg,root,dominios);            
         }
 
         private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
         {
-            foreach (var hijos in r.getHijos())
+            Console.WriteLine("AQUI ESTOY!!!! 4");
+            //primero la raiz
+            if (tag[2] == r.getDatoRaiz().getTag())
             {
-                if(hijos.getDatoRaiz().getTag() == tag[2])
+                if (!siExiste(r, tag[1])) //si los hijos no poseen de nombre el tag 1
                 {
-                    Console.WriteLine("por su tag 2 agregue a: "+n.getDatoRaiz());
-                    hijos.agregarHijo(n);
-                    break;
-                }else if (hijos.getDatoRaiz().getTag() == tag[1])
-                {
-                    Console.WriteLine("por su tag 1 agregue a: " + n.getDatoRaiz());
-                    hijos.agregarHijo(n);
-                    break;
-                }else if (hijos.getDatoRaiz().getTag() == tag[1] && tag[0] != hijos.getDatoRaiz().getTag())
-                {
-                    Console.WriteLine("por su nose agregue a: " + n.getDatoRaiz());
-                    hijos.agregarHijo(n);
-                    break;
+                    Console.WriteLine("AQUI ESTOY!!!! 2");
+                    registroDNS dnsAux = new registroDNS(tag[1], "", "");
+                    ArbolGeneral<registroDNS> aux = new ArbolGeneral<registroDNS>(dnsAux);
+                    r.agregarHijo(aux);
+                    _add(n, aux, tag);
                 }
-                else
+
+            }
+            else if (tag[1] == r.getDatoRaiz().getTag())
+            {
+                r.agregarHijo(n);
+            }
+            else
+            {
+                foreach(var hijo in r.getHijos())
                 {
-                    _add(n,hijos,tag);
+                    _add(n,hijo,tag);
                 }
             }
 
         }
         ///
+
+        private bool siExiste(ArbolGeneral<registroDNS> chek, string tag) //chequea que ningun hijo tenga ese tag
+        {
+            int count = 0;
+            for (int i = 0; i < chek.getHijos().Count;i++)
+            {
+                if((chek.getHijos()[i]).getDatoRaiz().getTag() != tag)
+                {
+                    count++;
+                }
+            }
+
+            if(count == chek.getHijos().Count)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
   
 }
