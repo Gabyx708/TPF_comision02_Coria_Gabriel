@@ -9,7 +9,7 @@ namespace TPF_dns
     {
         /*creacion del arbol DNS*/
         private static dnsTree dnsSys = null;
-        private registroDNS r,c,n,o,g;
+        private registroDNS r, c, n, o;
         private ArbolGeneral<registroDNS> root;
         
         public static dnsTree getInstance()
@@ -26,16 +26,17 @@ namespace TPF_dns
             c = new registroDNS("com", "120.0.0.0", "dns");
             n = new registroDNS("net", "130.0.0.0", "dns");
             o = new registroDNS("org", "140.0.0.0", "dns");
-            g = new registroDNS("google","8.8.8.8","dns");
+
             /*se crean los arboles hijos de la raiz*/
             root = new ArbolGeneral<registroDNS>(r);
             root.agregarHijo(new ArbolGeneral<registroDNS>(c));
             root.agregarHijo(new ArbolGeneral<registroDNS>(n));
             root.agregarHijo(new ArbolGeneral<registroDNS>(o));
-            root.agregarHijo(new ArbolGeneral<registroDNS>(g));
+ 
 
         }
         
+        /*----LOGICA DE AGREGADO----*/
         public ArbolGeneral<registroDNS> dnsSistema()
         {
             return root; /*contiene todo el sistema dns*/
@@ -52,21 +53,27 @@ namespace TPF_dns
 
         private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
         {
-            Console.WriteLine("AQUI ESTOY!!!! 4");
+            
             //primero la raiz
-            if (tag[2] == r.getDatoRaiz().getTag())
+            if (tag[tag.Length -1] == r.getDatoRaiz().getTag())
             {
                 if (!siExiste(r, tag[1])) //si los hijos no poseen de nombre el tag 1
                 {
-                    Console.WriteLine("AQUI ESTOY!!!! 2");
+                   
                     registroDNS dnsAux = new registroDNS(tag[1], "", "");
                     ArbolGeneral<registroDNS> aux = new ArbolGeneral<registroDNS>(dnsAux);
                     r.agregarHijo(aux);
                     _add(n, aux, tag);
                 }
+                else
+                {
+                   ArbolGeneral<registroDNS> hijo = EsteHijo(r,tag[1]);
+                    hijo.agregarHijo(n);
+                }
+            
 
             }
-            else if (tag[1] == r.getDatoRaiz().getTag())
+            else if (tag[tag.Length - 2] == r.getDatoRaiz().getTag())
             {
                 r.agregarHijo(n);
             }
@@ -99,6 +106,43 @@ namespace TPF_dns
 
             return true;
         }
-    }
+
+        private ArbolGeneral<registroDNS> EsteHijo(ArbolGeneral<registroDNS> r,string tag)
+        {
+            foreach(var child in r.getHijos())
+            {
+                if (child.getDatoRaiz().getTag() == tag)
+                    return child;
+            }
+
+            return null;
+        }
+
+
+        /*-----LOGICA DE BUSQUEDA----*/
+
+        public registroDNS buscarDominio(string dominio)
+        {
+
+            registroDNS encontrado = _buscarDominio(dnsSistema(),dominio,null);
+            return encontrado;
+        }
+
+        private registroDNS _buscarDominio(ArbolGeneral<registroDNS> r,string d,registroDNS found)
+        {
+            if (r.getDatoRaiz().getTag() == d)
+            {
+                found = r.getDatoRaiz();
+                return found;
+            }
+
+            foreach(var child in r.getHijos())
+            {
+               found = _buscarDominio(child,d,found);
+            }
+
+            return found;      
+        }
   
+    }
 }

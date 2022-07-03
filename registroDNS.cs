@@ -52,5 +52,10 @@ namespace TPF_dns
         {
             return tag;
         }
+
+        public string Presentar()
+        {
+            return "\nURL: " + tag + "\nIP: " + IP + "\nServicio: " + service+"\n";
+        }
     }
 }
