@@ -45,7 +45,10 @@ namespace TPF_dns
 
         private void eliminarDominio()
         {
-            Console.WriteLine("por ahora no hago nada c:");
+            Console.Write("ingresa el dominio que quieres eliminar: ");
+            string url = Console.ReadLine();
+            dns.eliminDom(url);
+            
         }
     }
 }

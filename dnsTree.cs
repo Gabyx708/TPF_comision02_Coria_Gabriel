@@ -52,14 +52,12 @@ namespace TPF_dns
         }
 
         private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
-        {
-            
+        {           
             //primero la raiz
             if (tag[tag.Length -1] == r.getDatoRaiz().getTag())
             {
                 if (!siExiste(r, tag[1])) //si los hijos no poseen de nombre el tag 1
-                {
-                   
+                {                  
                     registroDNS dnsAux = new registroDNS(tag[1], "", "");
                     ArbolGeneral<registroDNS> aux = new ArbolGeneral<registroDNS>(dnsAux);
                     r.agregarHijo(aux);
@@ -71,7 +69,6 @@ namespace TPF_dns
                     hijo.agregarHijo(n);
                 }
             
-
             }
             else if (tag[tag.Length - 2] == r.getDatoRaiz().getTag())
             {
@@ -84,7 +81,6 @@ namespace TPF_dns
                     _add(n,hijo,tag);
                 }
             }
-
         }
         ///
 
@@ -142,6 +138,26 @@ namespace TPF_dns
             }
 
             return found;      
+        }
+
+
+        /*-----LOGICA DE ELIMINACION---*/
+
+        public void eliminDom(string dominio)
+        {
+            _eliminDom(dominio,dnsSistema());
+        }
+
+        private void _eliminDom(string dom,ArbolGeneral<registroDNS> ar)
+        {
+            Console.WriteLine("\n ME EJECUTE " + ar.getDatoRaiz());
+            var hijo = EsteHijo(ar, dom);
+            ar.eliminarHijo(hijo);
+
+            foreach (var child in ar.getHijos())
+            {                 
+                _eliminDom(dom, child);
+            }
         }
   
     }

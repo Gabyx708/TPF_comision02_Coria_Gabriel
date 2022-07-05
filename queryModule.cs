@@ -7,12 +7,18 @@ namespace TPF_dns
     class queryModule
     {
         private dnsTree dns;
-
-        public queryModule()
+        private static queryModule query = null;
+        private queryModule()
         {
             dns = dnsTree.getInstance();
         }
 
+        public static queryModule getInstance()
+        {
+            if (query == null)
+                query = new queryModule();
+            return query;
+        }
         public void inicio()
         {
             Console.WriteLine("¿que desea hacer hoy?:\n1- consultar por un dominio\n2-buscar subdominios");
