@@ -159,6 +159,29 @@ namespace TPF_dns
                 _eliminDom(dom, child);
             }
         }
+
+        /*---LOGICA DE BUSQUEDA DE SUBDOMINIOS---*/
+
+
+        public ArbolGeneral<registroDNS> busquedaSubdominio(string sub)
+        {
+            var arbol = _busquedaSubdominio(sub,dnsSistema(),null);
+            return arbol;
+        }
+        private ArbolGeneral<registroDNS> _busquedaSubdominio(string sub,ArbolGeneral<registroDNS> r,ArbolGeneral<registroDNS> found)
+        {
+            if( r.getDatoRaiz().getTag() == sub)
+            {
+                found = r;
+                return found;
+            }
+
+            foreach (var child in r.getHijos())
+            {
+                found = _busquedaSubdominio(sub, child,found);          
+            }
+            return found;
+        }
   
     }
 }

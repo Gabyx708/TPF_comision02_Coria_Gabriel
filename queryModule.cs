@@ -27,7 +27,8 @@ namespace TPF_dns
             switch (opcion)
             {
                 case "1": consultarDominio(); break;
-                case "2": consultarDominio(); break;
+                case "2": consultarSubdominio(); break;
+                case "3": consultarDominio(); break;
                 default: inicio(); break;
             }
         }
@@ -48,6 +49,14 @@ namespace TPF_dns
             }          
         }
 
-        
+        private void consultarSubdominio()
+        {
+            Console.Write("Subdominio a consultar: ");
+            string sub = Console.ReadLine();
+
+            var arb = dns.busquedaSubdominio(sub);
+
+            arb.porNiveles();
+        }
     }
 }
