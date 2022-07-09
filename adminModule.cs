@@ -7,10 +7,17 @@ namespace TPF_dns
     class adminModule
     {
         private dnsTree dns;
-
-        public adminModule()
+        private static adminModule admin = null;
+        private adminModule()
         {
             dns = dnsTree.getInstance();
+        }
+
+        public static adminModule getInstance()
+        {
+            if (admin == null)
+                admin = new adminModule();
+            return admin;
         }
 
         public void inicio()

@@ -33,9 +33,9 @@ namespace TPF_dns
           
             /*se crean los arboles hijos de la raiz*/
             root = new ArbolGeneral<registroDNS>(r);
-           /* root.agregarHijo(new ArbolGeneral<registroDNS>(c));
+            root.agregarHijo(new ArbolGeneral<registroDNS>(c));
             root.agregarHijo(new ArbolGeneral<registroDNS>(n));
-            root.agregarHijo(new ArbolGeneral<registroDNS>(o));*/
+            root.agregarHijo(new ArbolGeneral<registroDNS>(o));
         }
         
         /*----LOGICA DE AGREGADO----*/
@@ -51,43 +51,44 @@ namespace TPF_dns
 
             /*nuevo hijo para agregar al arbol*/
             ArbolGeneral<registroDNS> newReg = new ArbolGeneral<registroDNS>(dns);
-            /* _add(newReg,root,dominios); */
-            _agrego(dominios,root,newReg,dominios.Length - 1);
+            _add(dominios,root,newReg,dominios.Length - 1);
         }
 
-        private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
-        {           
-            //primero la raiz
-            if (tag[tag.Length -1] == r.getDatoRaiz().getTag())
+        private void _add(string[] dom, ArbolGeneral<registroDNS> r, ArbolGeneral<registroDNS> nuev, int contador)
+        {
+            string tag = dom[contador];
+            ArbolGeneral<registroDNS> arbAux = null;
+
+            foreach (var hijo in r.getHijos())
             {
-                if (!siExiste(r, tag[tag.Length - 2])) //si los hijos no poseen de nombre el tag 1
-                {                  
-                    registroDNS dnsAux = new registroDNS(tag[1], "", "");
-                    dnsAux.setOrden(true);
-                    ArbolGeneral<registroDNS> aux = new ArbolGeneral<registroDNS>(dnsAux);
-                    r.agregarHijo(aux);
-                    _add(n, aux, tag);
-                }
-                else
+                if (tag == hijo.getDatoRaiz().getTag())
                 {
-                   ArbolGeneral<registroDNS> hijo = EsteHijo(r,tag[1]);
-                    hijo.agregarHijo(n);
+                    arbAux = hijo;
+                    break;
                 }
-            
             }
-            else if (tag[tag.Length - 2] == r.getDatoRaiz().getTag())
+
+            if (arbAux == null)
             {
-                r.agregarHijo(n);
+                registroDNS dnsAux = new registroDNS(dom[contador], "", "");
+                arbAux = new ArbolGeneral<registroDNS>(dnsAux);
+                dnsAux.setOrden(true);
+                r.agregarHijo(arbAux);
             }
-            else
+
+            contador = contador - 1;
+
+            if (contador == 0)
             {
-                foreach(var hijo in r.getHijos())
-                {
-                    _add(n,hijo,tag);
-                }
+                arbAux.agregarHijo(nuev);
+            }
+
+            if (contador > 0)
+            {
+                _add(dom, arbAux, nuev, contador);
             }
         }
-        
+
         /*--METODOS DE UTILIDAD-----*/
         private bool siExiste(ArbolGeneral<registroDNS> chek, string tag) //chequea que ningun hijo tenga ese tag
         {
@@ -253,35 +254,6 @@ namespace TPF_dns
         }
 
 
-        private void _agrego(string[] dom, ArbolGeneral<registroDNS> r, ArbolGeneral<registroDNS> nuev, int contador)
-        {
-            string tag = dom[contador];
-
-            foreach (var hijo in r.getHijos())
-            {
-                if (tag == hijo.getDatoRaiz().getTag())
-                {
-                    hijo.agregarHijo(nuev);
-                    break;
-                }
-            }
-
-            registroDNS dnsAux = new registroDNS(dom[contador], "", "");
-            ArbolGeneral<registroDNS> arbAux = new ArbolGeneral<registroDNS>(dnsAux);
-
-            if (contador == 0)
-            {
-                r.agregarHijo(nuev);
-            }
-
-            dnsAux.setOrden(true);   
-            r.agregarHijo(arbAux);
-            contador = contador - 1;
-
-            if (contador >= 0)
-            {
-                _agrego(dom, arbAux, nuev, contador);
-            }
-        }
+        
     }
 }
