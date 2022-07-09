@@ -9,12 +9,14 @@ namespace TPF_dns
         private string tag;
         private string IP;
         private string service;
+        private bool ordenSup;
 
         public registroDNS(string t,string ip,string s)
         {
             tag = t;
             IP = ip;
             service = s;
+            ordenSup = false;
         }
 
         public void setService(string s)
@@ -30,6 +32,11 @@ namespace TPF_dns
         public void setTsg(string t)
         {
             tag = t;
+        }
+
+        public void setOrden(bool o)
+        {
+            ordenSup = o;
         }
 
         public override string ToString()
@@ -51,6 +58,11 @@ namespace TPF_dns
         public string getTag()
         {
             return tag;
+        }
+
+        public bool getOrd()
+        {
+            return ordenSup;
         }
 
         public string Presentar()

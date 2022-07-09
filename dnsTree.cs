@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Text;
 using dataEstruct;
 
@@ -26,14 +27,15 @@ namespace TPF_dns
             c = new registroDNS("com", "120.0.0.0", "dns");
             n = new registroDNS("net", "130.0.0.0", "dns");
             o = new registroDNS("org", "140.0.0.0", "dns");
-
+            c.setOrden(true);
+            n.setOrden(true);
+            o.setOrden(true);
+          
             /*se crean los arboles hijos de la raiz*/
             root = new ArbolGeneral<registroDNS>(r);
-            root.agregarHijo(new ArbolGeneral<registroDNS>(c));
+           /* root.agregarHijo(new ArbolGeneral<registroDNS>(c));
             root.agregarHijo(new ArbolGeneral<registroDNS>(n));
-            root.agregarHijo(new ArbolGeneral<registroDNS>(o));
- 
-
+            root.agregarHijo(new ArbolGeneral<registroDNS>(o));*/
         }
         
         /*----LOGICA DE AGREGADO----*/
@@ -42,13 +44,15 @@ namespace TPF_dns
             return root; /*contiene todo el sistema dns*/
         }
 
+        /*------LOGICA DE AGREGADO--------*/
         public void addRegister(registroDNS dns)
         {
            string[] dominios = dns.getTag().Split('.');
 
             /*nuevo hijo para agregar al arbol*/
             ArbolGeneral<registroDNS> newReg = new ArbolGeneral<registroDNS>(dns);
-            _add(newReg,root,dominios);            
+            /* _add(newReg,root,dominios); */
+            _agrego(dominios,root,newReg,dominios.Length - 1);
         }
 
         private void _add(ArbolGeneral<registroDNS> n, ArbolGeneral<registroDNS> r, string[] tag)
@@ -56,9 +60,10 @@ namespace TPF_dns
             //primero la raiz
             if (tag[tag.Length -1] == r.getDatoRaiz().getTag())
             {
-                if (!siExiste(r, tag[1])) //si los hijos no poseen de nombre el tag 1
+                if (!siExiste(r, tag[tag.Length - 2])) //si los hijos no poseen de nombre el tag 1
                 {                  
                     registroDNS dnsAux = new registroDNS(tag[1], "", "");
+                    dnsAux.setOrden(true);
                     ArbolGeneral<registroDNS> aux = new ArbolGeneral<registroDNS>(dnsAux);
                     r.agregarHijo(aux);
                     _add(n, aux, tag);
@@ -82,8 +87,8 @@ namespace TPF_dns
                 }
             }
         }
-        ///
-
+        
+        /*--METODOS DE UTILIDAD-----*/
         private bool siExiste(ArbolGeneral<registroDNS> chek, string tag) //chequea que ningun hijo tenga ese tag
         {
             int count = 0;
@@ -113,7 +118,6 @@ namespace TPF_dns
 
             return null;
         }
-
 
         /*-----LOGICA DE BUSQUEDA----*/
 
@@ -150,19 +154,18 @@ namespace TPF_dns
 
         private void _eliminDom(string dom,ArbolGeneral<registroDNS> ar)
         {
-            Console.WriteLine("\n ME EJECUTE " + ar.getDatoRaiz());
-            var hijo = EsteHijo(ar, dom);
-            ar.eliminarHijo(hijo);
-
             foreach (var child in ar.getHijos())
-            {                 
-                _eliminDom(dom, child);
+            {
+                if (child.getDatoRaiz().getTag() == dom)
+                {
+                    ar.eliminarHijo(child);
+                    break;
+                }
+                _eliminDom(dom,child);
             }
         }
 
         /*---LOGICA DE BUSQUEDA DE SUBDOMINIOS---*/
-
-
         public ArbolGeneral<registroDNS> busquedaSubdominio(string sub)
         {
             var arbol = _busquedaSubdominio(sub,dnsSistema(),null);
@@ -182,6 +185,103 @@ namespace TPF_dns
             }
             return found;
         }
-  
+        
+
+        /*-----LOGICA DE PROFUNDIDAD-----*/
+
+        public void profundidad(int pr)
+        {
+           var cola = _profundidad(pr);
+
+            int contEqui=0, contSup=0;
+
+            while (!cola.esVacia())
+            {
+                var ele =cola.desencolar();
+                
+                if(ele.getDatoRaiz().getOrd())
+                {
+                    contSup++;
+                }
+
+                if(ele.esHoja())
+                {
+                    contEqui++;
+                }
+
+            }
+
+            Console.WriteLine("****************************************************");
+            Console.WriteLine("equipos: "+contEqui+" dominios superiores: "+contSup);
+            Console.WriteLine("****************************************************");
+        }
+        private Cola<ArbolGeneral<registroDNS>>  _profundidad(int pr)
+        {
+            Cola<ArbolGeneral<registroDNS>> cola = new Cola<ArbolGeneral<registroDNS>>();
+            ArbolGeneral<registroDNS> arbolAux;
+
+            cola.encolar(root);
+            cola.encolar(null);
+            int contNIvel = 0;
+
+            while (!cola.esVacia())
+            {
+                arbolAux = cola.desencolar();
+
+                if (arbolAux == null)
+                {
+                    contNIvel++;
+
+                    if(contNIvel == pr)
+                    {
+                        return cola;
+                    }
+
+                    if (!cola.esVacia())
+                        cola.encolar(null);
+                }
+                else
+                {
+                    foreach (var hijo in arbolAux.getHijos())
+                    {
+                        cola.encolar(hijo);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
+        private void _agrego(string[] dom, ArbolGeneral<registroDNS> r, ArbolGeneral<registroDNS> nuev, int contador)
+        {
+            string tag = dom[contador];
+
+            foreach (var hijo in r.getHijos())
+            {
+                if (tag == hijo.getDatoRaiz().getTag())
+                {
+                    hijo.agregarHijo(nuev);
+                    break;
+                }
+            }
+
+            registroDNS dnsAux = new registroDNS(dom[contador], "", "");
+            ArbolGeneral<registroDNS> arbAux = new ArbolGeneral<registroDNS>(dnsAux);
+
+            if (contador == 0)
+            {
+                r.agregarHijo(nuev);
+            }
+
+            dnsAux.setOrden(true);   
+            r.agregarHijo(arbAux);
+            contador = contador - 1;
+
+            if (contador >= 0)
+            {
+                _agrego(dom, arbAux, nuev, contador);
+            }
+        }
     }
 }

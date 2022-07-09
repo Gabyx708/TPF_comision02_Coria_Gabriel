@@ -21,14 +21,14 @@ namespace TPF_dns
         }
         public void inicio()
         {
-            Console.WriteLine("¿que desea hacer hoy?:\n1- consultar por un dominio\n2-buscar subdominios");
+            Console.WriteLine("¿que desea hacer hoy?:\n1- consultar por un dominio\n2-buscar subdominios\n3-buscar en profundidad");
             string opcion = Console.ReadLine();
 
             switch (opcion)
             {
                 case "1": consultarDominio(); break;
                 case "2": consultarSubdominio(); break;
-                case "3": consultarDominio(); break;
+                case "3": busquedaProfundidad(); break;
                 default: inicio(); break;
             }
         }
@@ -56,7 +56,23 @@ namespace TPF_dns
 
             var arb = dns.busquedaSubdominio(sub);
 
-            arb.porNiveles();
+            if (arb != null )
+            {
+              arb.porNiveles();
+            }
+            else
+            {
+                Console.WriteLine("hmmm...no encotramos lo que estas buscando :(");
+            }      
+        }
+
+        private void busquedaProfundidad()
+        {
+            Console.Write("Profundidad a consultar: ");
+            int p = int.Parse(Console.ReadLine());
+
+             dns.profundidad(p);
+       
         }
     }
 }
