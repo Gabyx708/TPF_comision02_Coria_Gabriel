@@ -22,7 +22,8 @@ namespace TPF_dns
 
         public void inicio()
         {
-            Console.WriteLine("¿que desea hacer hoy?:\n1- agregar un dominio\n2-eliminar un dominio");
+            Console.WriteLine("\n¿que desea hacer hoy?:\n1- agregar un dominio\n2-eliminar un dominio");
+            Console.Write(" opcion: ");
             string opcion = Console.ReadLine();
 
             switch (opcion)
@@ -34,7 +35,7 @@ namespace TPF_dns
         }
         private void ingresarDominio()
         {
-            Console.WriteLine("/-------INGRESAR DOMINIO-----/");
+            Console.WriteLine("\n/-------INGRESAR DOMINIO-----/");
             Console.Write("ingrese el nombre del dominio: ");
             string dominio = Console.ReadLine();
 
@@ -55,7 +56,7 @@ namespace TPF_dns
             Console.Write("ingresa el dominio que quieres eliminar: ");
             string url = Console.ReadLine();
             dns.eliminDom(url);
-            
+            Console.WriteLine("ELIMINAMOS EL DOMINIO :)");
         }
     }
 }

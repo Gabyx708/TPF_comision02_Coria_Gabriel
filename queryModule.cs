@@ -21,7 +21,8 @@ namespace TPF_dns
         }
         public void inicio()
         {
-            Console.WriteLine("¿que desea hacer hoy?:\n1- consultar por un dominio\n2-buscar subdominios\n3-buscar en profundidad");
+            Console.WriteLine("\n¿que desea hacer hoy?:\n1-consultar por un dominio\n2-buscar subdominios\n3-buscar en profundidad");
+            Console.Write(" opcion: ");
             string opcion = Console.ReadLine();
 
             switch (opcion)
@@ -71,6 +72,10 @@ namespace TPF_dns
             Console.Write("Profundidad a consultar: ");
             int p = int.Parse(Console.ReadLine());
 
+            if (p == 0)
+            {
+                p = 1;
+            }
              dns.profundidad(p);
        
         }

@@ -33,9 +33,9 @@ namespace TPF_dns
           
             /*se crean los arboles hijos de la raiz*/
             root = new ArbolGeneral<registroDNS>(r);
-            root.agregarHijo(new ArbolGeneral<registroDNS>(c));
+            /*root.agregarHijo(new ArbolGeneral<registroDNS>(c));
             root.agregarHijo(new ArbolGeneral<registroDNS>(n));
-            root.agregarHijo(new ArbolGeneral<registroDNS>(o));
+            root.agregarHijo(new ArbolGeneral<registroDNS>(o));*/
         }
         
         /*----LOGICA DE AGREGADO----*/
@@ -153,13 +153,13 @@ namespace TPF_dns
             _eliminDom(dominio,dnsSistema());
         }
 
-        private void _eliminDom(string dom,ArbolGeneral<registroDNS> ar)
-        {
+        private void _eliminDom(string dom, ArbolGeneral<registroDNS> ar)
+        {       
             foreach (var child in ar.getHijos())
             {
                 if (child.getDatoRaiz().getTag() == dom)
                 {
-                    ar.eliminarHijo(child);
+                    ar.eliminarHijo(child);              
                     break;
                 }
                 _eliminDom(dom,child);
@@ -209,7 +209,6 @@ namespace TPF_dns
                 {
                     contEqui++;
                 }
-
             }
 
             Console.WriteLine("****************************************************");
@@ -252,8 +251,6 @@ namespace TPF_dns
 
             return null;
         }
-
-
-        
+       
     }
 }
